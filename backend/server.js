@@ -251,14 +251,21 @@ const buildHtmlEmail = (lead, bodyText, catalogueUrl) => {
 };
 
 const sendEmailNotification = async (lead, config) => {
-  const { smtpHost, smtpPort, smtpSecure, smtpUser, smtpPass, smtpSender, emailTemplateSubject, catalogueUrl } = config;
+  const smtpHost = process.env.SMTP_HOST || config.smtpHost;
+  const smtpPort = process.env.SMTP_PORT || config.smtpPort;
+  const smtpSecure = process.env.SMTP_SECURE !== undefined ? process.env.SMTP_SECURE : config.smtpSecure;
+  const smtpUser = process.env.SMTP_USER || config.smtpUser;
+  const rawPass = process.env.SMTP_PASS || config.smtpPass;
+  const smtpSender = process.env.SMTP_SENDER || config.smtpSender;
+  const { emailTemplateSubject, catalogueUrl } = config;
   
-  if (!smtpHost || !smtpUser || !smtpPass) {
-    addLog('email', lead.email, 'failed', 'SMTP credentials are not configured in settings.');
+  if (!smtpHost || !smtpUser || !rawPass) {
+    addLog('email', lead.email, 'failed', 'SMTP credentials are not configured.');
     return { success: false, error: 'SMTP not configured' };
   }
 
-  const decryptedPass = decrypt(smtpPass);
+  // Use plain text if env var or not encrypted, else decrypt
+  const decryptedPass = (process.env.SMTP_PASS || !rawPass.includes(':')) ? rawPass : decrypt(rawPass);
 
   try {
     const transporter = nodemailer.createTransport({
@@ -378,7 +385,14 @@ const sendDailySummaryEmail = async () => {
   const config = getConfig();
   const leads = getLeads();
 
-  if (!config.smtpHost || !config.smtpUser || !config.smtpPass) {
+  const smtpHost = process.env.SMTP_HOST || config.smtpHost;
+  const smtpPort = process.env.SMTP_PORT || config.smtpPort;
+  const smtpSecure = process.env.SMTP_SECURE !== undefined ? process.env.SMTP_SECURE : config.smtpSecure;
+  const smtpUser = process.env.SMTP_USER || config.smtpUser;
+  const rawPass = process.env.SMTP_PASS || config.smtpPass;
+  const smtpSender = process.env.SMTP_SENDER || config.smtpSender;
+
+  if (!smtpHost || !smtpUser || !rawPass) {
     console.log('Daily summary: SMTP credentials not configured.');
     return { success: false, error: 'SMTP not configured' };
   }
@@ -394,13 +408,13 @@ const sendDailySummaryEmail = async () => {
     csv += `"${name}","${phone}","${email}","${company}","${date}"\\n`;
   });
 
-  const decryptedPass = decrypt(config.smtpPass);
+  const decryptedPass = (process.env.SMTP_PASS || !rawPass.includes(':')) ? rawPass : decrypt(rawPass);
   const transporter = nodemailer.createTransport({
-    host: config.smtpHost,
-    port: parseInt(config.smtpPort),
-    secure: config.smtpSecure === 'true' || config.smtpSecure === true,
+    host: smtpHost,
+    port: parseInt(smtpPort),
+    secure: smtpSecure === 'true' || smtpSecure === true,
     auth: {
-      user: config.smtpUser,
+      user: smtpUser,
       pass: decryptedPass
     },
     tls: {
