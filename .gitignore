@@ -1,0 +1,12 @@
+# Ignore Node modules
+node_modules/
+dist/
+.DS_Store
+
+# Ignore local database states (we want a fresh DB in production)
+backend/leads.json
+backend/logs.json
+backend/secret.key
+
+# Ignore zip files
+*.zip

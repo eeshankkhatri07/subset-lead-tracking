@@ -1,0 +1,16 @@
+{
+  "smtpHost": "smtp.gmail.com",
+  "smtpPort": "587",
+  "smtpSecure": false,
+  "smtpUser": "sipl.connect@gmail.com",
+  "smtpPass": "49fa9fb5b7fb41b7ff30d52f:0a7e5717d1f5ee4687bf9be13b471cae:e85ce60fee799c983797959769ee83aa",
+  "smtpSender": "Subset Industries Pvt. Ltd. <sipl.connect@gmail.com>",
+  "smsGateway": "mock",
+  "twilioSid": "",
+  "twilioAuthToken": "",
+  "twilioNumber": "",
+  "catalogueUrl": "https://drive.google.com/drive/u/4/folders/18udstLL0iFI0tnOV5zwypuuJCs4OjDOK",
+  "emailTemplateSubject": "Great Meeting You at Paperworld Expo – Subset Industries",
+  "emailTemplateBody": "",
+  "smsTemplateBody": "Hi {{name}}, great meeting you at Subset Industries, Stall D44, Paperworld Expo! Browse our catalogue: https://drive.google.com/drive/u/4/folders/18udstLL0iFI0tnOV5zwypuuJCs4OjDOK | Queries: sales@subsetpens.com | +91 97271 79186"
+}
