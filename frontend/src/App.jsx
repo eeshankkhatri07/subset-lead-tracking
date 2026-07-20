@@ -39,7 +39,7 @@ function App() {
 
   const verifyPin = (e) => {
     e.preventDefault();
-    if (pinInput === '1234') {
+    if (pinInput === 'SIPL@2026*') {
       setPinError(false);
       setPinInput('');
       setShowPinModal(false);
@@ -90,18 +90,17 @@ function App() {
                 <input 
                   type="password" 
                   className="input-field" 
-                  maxLength={4}
                   value={pinInput}
-                  onChange={(e) => setPinInput(e.target.value.replace(/\D/g, ''))}
+                  onChange={(e) => setPinInput(e.target.value)}
                   placeholder=" "
                   id="admin_pin"
                   autoFocus
                 />
-                <label htmlFor="admin_pin" className="input-label">Enter 4-Digit PIN (Default: 1234)</label>
+                <label htmlFor="admin_pin" className="input-label">Enter Admin Passcode</label>
               </div>
 
               {pinError && (
-                <p style={styles.errorText}>Invalid PIN code. Please try again.</p>
+                <p style={styles.errorText}>Invalid passcode. Please try again.</p>
               )}
 
               <div style={styles.modalActions}>
